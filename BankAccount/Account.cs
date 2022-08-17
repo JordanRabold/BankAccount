@@ -11,6 +11,8 @@ namespace BankAccount
     /// </summary>
     public class Account
     {
+        private string owner;
+
         /// <summary>
         /// Creates an account with a specific owner and a balance of 0
         /// </summary>
@@ -23,7 +25,60 @@ namespace BankAccount
         /// <summary>
         /// Account holders full name (first and last)
         /// </summary>
-        public string Owner { get; set; }
+        public string Owner
+        {
+            get { return owner; }
+            set 
+            { 
+                if(value == null)
+                {
+                    throw new ArgumentNullException($"{Owner} cannot be null");
+                }
+                if(value.Trim() == String.Empty)
+                {
+                    throw new ArgumentException($"{nameof(Owner)} must have some text");
+                }
+                if (IsOwnerNameValid(value))
+                {
+                    owner = value;
+                }
+                else
+                {
+                    throw new ArgumentException($"{nameof(Owner)} can be up to 20 characters, A-Z only, can contain spaces");
+                }
+            }
+        }
+
+        private bool IsOwnerNameValid(string ownerName)
+        {
+            char[] validCharacters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+                'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+            ownerName = ownerName.ToLower(); // Only need to compare to one casing
+
+            const int MaxLengthOwnerName = 20;
+
+            if(ownerName.Length > MaxLengthOwnerName)
+            {
+                return false;
+            }
+
+            foreach(char letter in ownerName)
+            {
+                if(letter != ' ' && !validCharacters.Contains(letter))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if the Owner name is 20 characters or less, A-Z and 
+        /// whitespace characters are aloud
+        /// </summary>
+        /// <returns></returns>
+
 
         /// <summary>
         /// The ammount of money currently in the account
@@ -37,7 +92,7 @@ namespace BankAccount
         /// <returns>The new balance after the deposit</returns>
         public double Deposit(double amt)
         {
-            if(amt <= 0)
+            if (amt <= 0)
             {
                 throw new ArgumentOutOfRangeException($"The {nameof(amt)} must be more than 0");
             }
@@ -57,7 +112,7 @@ namespace BankAccount
                 throw new ArgumentException($"{nameof(amount)} cannot be greater than {nameof(Balance)}");
             }
 
-            if(amount <= 0)
+            if (amount <= 0)
             {
                 throw new ArgumentOutOfRangeException($"{nameof(amount)} must be greater than 0");
             }
