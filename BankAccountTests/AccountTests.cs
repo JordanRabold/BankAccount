@@ -139,7 +139,6 @@ namespace BankAccount.Tests
         [TestMethod]
         [DataRow("Jordan")]
         [DataRow("Jordan Rabold")]
-        [DataRow("Jordan Reid Rabolddddd")]
         public void Owner_SetAsUpTo20Characters_SetsSuccessfully(string ownerName)
         {
             // Set
